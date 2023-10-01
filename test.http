@@ -8,7 +8,7 @@ GET http://localhost:5173/api/dogs
 ### Get a specific dog by ID
 ###
 
-GET http://localhost:5173/api/dogs/4
+GET http://localhost:5173/api/dogs/3
 
 ###
 ### Create a new dog
@@ -18,7 +18,7 @@ POST http://localhost:5173/api/dogs
 Content-Type: application/json
 
 {
-  "name": "vaca"
+  "name": "Vaca"
 }
 
 ###
@@ -29,14 +29,14 @@ PUT http://localhost:5173/api/dogs/4
 Content-Type: application/json
 
 {
-  "name": "vaca",
+  "name": "Vaquita",
   "age": 3
 }
 
 ###
 ### Delete a dog
 ###
-DELETE http://localhost:5173/api/dogs/4
+DELETE http://localhost:5173/api/dogs/5
 
 ###
 ### Delete all dogs

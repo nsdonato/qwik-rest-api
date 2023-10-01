@@ -1,31 +1,52 @@
-import type { RequestHandler } from '@builder.io/qwik-city'
-import dogs from './data.json'
+import type { RequestHandler } from '@builder.io/qwik-city';
+import { readBdFile, writeBdFile } from '~/utils/file';
 
-export const onGet: RequestHandler = ({ json }) => {
-  json(200, dogs)
-}
+export const onGet: RequestHandler = async ({ json }) => {
+  try {
+    const dogs = await readBdFile();
+    json(200, dogs);
+  } catch (error) {
+    json(500, error);
+  }
+};
 
 export const onPost: RequestHandler = async ({ request, json }) => {
-  const req = await request.json()
+  const req = await request.json();
+
+  const dogs = await readBdFile();
 
   const newId = dogs.reduce((acc, curr) => {
-    acc = curr.id
-    acc++
-    return acc
-  }, 0)
+    acc = curr.id;
+    acc++;
+    return acc;
+  }, 1);
 
   const newDog = {
     id: newId,
     name: req.name,
-    age: req.age
+    age: req.age,
+  };
+
+  dogs.push(newDog);
+
+  try {
+    await writeBdFile(dogs);
+    json(200, newDog);
+  } catch (err) {
+    json(500, err);
   }
+};
 
-  dogs.push(newDog)
+export const onDelete: RequestHandler = async ({ json }) => {
+  try {
+    const dogs = await readBdFile();
 
-  json(200, newDog)
-}
+    dogs.splice(0, dogs.length);
 
-export const onDelete: RequestHandler = ({ json }) => {
-  dogs.splice(0, dogs.length)
-  json(200, dogs)
-}
+    await writeBdFile(dogs);
+
+    json(200, dogs);
+  } catch (error) {
+    json(500, error);
+  }
+};
